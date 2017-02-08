@@ -1,0 +1,30 @@
+// line, font, type
+@function trim-value($line: $curr-line, $font: $curr-f, $type: 'ex'){
+  $lh: line($line, $font);
+  $em: font-var('em-adjust', $font) * 1em;
+  $ex: font-var('ex-adjust', $font) * 1ex;
+  $deltas: (em: 0, ex: subtract($em, $ex), mx: subtract($em/2, $ex/2));
+  @return add((($lh * 1em - $em) / 2), map-get($deltas, $type));
+}
+
+
+
+// mult, line, font, type
+@function trim-margin($mult: $curr-inner-y, $line: $curr-line, $font: $curr-f, $type: 'ex') {
+  @return subtract(inner-y($mult), trim-value($line, $font, $type));
+}
+
+
+@function trim-margin-ex($mult: $curr-inner-y, $line: $curr-line, $font: $curr-f) {
+  @return subtract(inner-y($mult), trim-value($line, $font, 'ex'));
+}
+
+
+@function trim-margin-em($mult: $curr-inner-y, $line: $curr-line, $font: $curr-f) {
+  @return subtract(inner-y($mult), trim-value($line, $font, 'em'));
+}
+
+
+@function trim-margin-mx($mult: $curr-inner-y, $line: $curr-line, $font: $curr-f) {
+  @return subtract(inner-y($mult), trim-value($line, $font, 'mx'));
+}

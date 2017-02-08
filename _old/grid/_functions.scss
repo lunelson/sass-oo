@@ -1,0 +1,17 @@
+//
+// grid functions... beta
+//
+
+
+@function grid-calc($m: $curr-medium-key) {
+  @return add-calc((medium-var('content-width', $m) or 100%), medium-var('inner-x', $m));
+}
+
+@function push-calc($n: 1, $m: $curr-medium-key) {
+  @return mul-calc(div-calc(grid-calc($m), medium-var('grid-columns', $m)), $n);
+}
+
+@function span-calc($n: 1, $m: $curr-medium-key) {
+  @return sub-calc(push-calc($n, $m), medium-var('inner-x'));
+}
+

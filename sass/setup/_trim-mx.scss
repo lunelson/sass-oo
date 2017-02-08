@@ -1,0 +1,44 @@
+// line, font, opts
+@mixin trim($line: $curr-line, $font: $curr-f, $opts: ()) {
+
+  // parse $opts if passed in other positions
+  @if type-of($line) == 'map' { $opts: $line; $line: $curr-line }
+  @if type-of($font) == 'map' { $opts: $font; $font: $curr-f }
+
+  // parse $opts VS defaults
+  $excl: append(map-get($opts, 'excl') or (), '.m-block');
+  $type: map-get($opts, 'type') or 'ex';
+
+  // save scope
+  $prev-line: $curr-line;
+  $prev-font: $curr-f;
+
+  // set scopes if non-null
+  @if $line { $curr-line: $line !global; line-height: line($line, $font); }
+  @if $font { $curr-f: $font !global; font-family: font-var('family', $font); }
+
+  @if $curr-stack {
+    @at-root #{insert-parents(null,'>')} {
+      margin-top: trim-margin-em(0, $line, $font);
+      margin-bottom: trim-margin-em(0, $line, $font);
+      @include adjacent-to(not-selector('*', $excl...)) { margin-top: trim-margin(null, $line, $font, $type); }
+      @content;
+    }
+  } @else {
+    @at-root #{insert-parents(base-class('m-stack'), '>')} {
+      margin-top: trim-margin-em(0, $line, $font);
+      margin-bottom: trim-margin-em(0, $line, $font);
+    }
+    @each $key, $mult in map-merge((base: 1), m-value('inner-y-mults')) {
+      @at-root #{insert-parents(mult-class('m-stack', $key),'>')} {
+        @include adjacent-to(not-selector('*', $excl...)) { margin-top: trim-margin($mult, $line, $font, $type); }
+        @content;
+      }
+    }
+  }
+
+  // restore scopes
+  $curr-line: $prev-line !global;
+  $curr-f: $prev-font !global;
+
+}

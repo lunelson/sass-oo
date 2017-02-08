@@ -1,0 +1,43 @@
+{
+  "name": "sass-oo",
+  "version": "0.9.0",
+  "description": "my sass objects, built on lunelson/sass-m and lunelson/sass-f",
+  "main": "_index.scss",
+  "directories": {
+    "test": "test"
+  },
+  "private": true,
+  "scripts": {
+    "test": "gulp test"
+  },
+  "author": "Lu Nelson",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lunelson/sass-oo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lunelson/sass-oo/issues"
+  },
+  "homepage": "https://github.com/lunelson/sass-oo#readme",
+  "keywords": [
+    "sass",
+    "libsass",
+    "oocss"
+  ],
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-diff": "^1.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0"
+  },
+  "dependencies": {
+    "sass-calc": "github:lunelson/sass-calc",
+    "sass-f": "github:lunelson/sass-f",
+    "sass-m": "github:lunelson/sass-m",
+    "sass-maps-plus": "github:lunelson/sass-maps-plus",
+    "sass-throw": "github:lunelson/sass-throw",
+    "sass-to-js": "github:lunelson/sass-to-js",
+    "sass-u": "github:lunelson/sass-u"
+  }
+}

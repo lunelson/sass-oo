@@ -1,0 +1,9 @@
+@import "major";
+@import "minor";
+@import "forms";
+
+@mixin reset--full {
+  @include reset--major;
+  @include reset--minor;
+  @include reset--forms;
+}

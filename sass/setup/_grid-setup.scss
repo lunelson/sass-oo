@@ -1,0 +1,79 @@
+//
+// grid-setup
+//
+
+
+@mixin grid-setup(){
+
+  #{_base-class('grid')} { @include grid(null); }
+  #{_base-class('fgrid')} { @include float-grid(null); }
+
+  .grid--0,
+  .fgrid--0 {
+    margin-right: 0;
+    margin-left: 0;
+    width: 100%;
+    & > * {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+
+  @include mm-for('grid') {
+    $mults: medium-var('inner-x-mults');
+
+    @each $m, $mult in map-merge((base: 1), $mults) {
+      $inner-x: $mult * medium-var('inner-x');
+
+      #{_mult-class('grid', $m)},
+      #{_mult-class('fgrid', $m)} {
+        margin-left: $inner-x / -2;
+        margin-right: $inner-x / -2;
+        width: calc(100% + #{$inner-x});
+        & > * {
+          padding-left: $inner-x / 2;
+          padding-right: $inner-x / 2;
+        }
+      }
+    }
+  }
+  $done-grid-setup: true !global;
+}
+
+//
+// grid-debug
+//
+
+
+// @mixin grid-debug($color: set-alpha(pink, 0.25),$m: $curr-mult-x-key, $offset: 0) {
+//   body::after {
+//     content: '';
+//     top: 0;
+//     bottom: 0;
+//     left: 50%;
+//     position: fixed;
+//     height: 100%;
+//     pointer-events: none;
+//     user-select: none;
+//     z-index: 999;
+//     display: block;
+//     @include media-each(){
+//       @if $curr-medium-key {
+//         $grid-columns: medium-var('grid-columns') or 8;
+//         $inner-x: inner-x($m);
+//         $outer-right: medium-var('outer-right');
+//         $outer-left: medium-var('outer-left');
+//         $page-offset: $outer-right - $outer-left + $offset;
+//         $content-width: medium-var('content-width') + $inner-x;
+//         width: $content-width;
+//         margin-left: ($content-width + $page-offset + $inner-x)/-2;
+//         background: linear-gradient(to right,
+//           rgba(0,0,0,0) $inner-x,
+//           $color $inner-x,
+//           $color $content-width / $grid-columns - $inner-x
+//         );
+//         background-size: $content-width / $grid-columns;
+//       }
+//     }
+//   }
+// }

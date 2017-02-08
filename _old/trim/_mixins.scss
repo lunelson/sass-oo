@@ -1,0 +1,99 @@
+///////////
+// typo //
+///////////
+
+// todo: test typo on lists and tables
+//     - can you still style lists and tables properly
+//     - protocol for defining local stuff
+
+/*
+  // SALIENT INFORMATION IS ONLY LINE AND FONT.
+  @include typo($line, $font) // specific line and font
+  @include typo(null, $font) // default line, specific font
+  @include typo($line, null) or typo($line) // specific line, default font
+  @include typo(null, null) or typo() // default line and font
+  @include typo(auto-line($size))
+
+  // AUTO LINE CALC
+  .foo { font-size: size(lg); @include typo(line(size, lg)); }
+  .foo {
+    $line: auto-line(lg);
+    font-size: size(lg);
+    line-height: $line;
+    @include typo((line: $line));
+  }
+  .foo { font-size: size(lg); @include typo(autoline(lg)); }
+
+  // default is ex-trimmed() margin-top. Pass a list of exceptions?
+  .stack p {
+    @include typo((line: 1.1, excl: div pre ))
+    // excl: [.m-block], trim: [ex]|mx|em
+    // -> .m-stack *:not(.m-block):not(div):not(pre) + p {}
+  }
+ */
+
+@mixin typo($s: $curr-size-key, $l: $curr-line-key, $f: $curr-f-key) {
+
+  $same-size-key: ($s == $curr-size-key);
+  $same-line-key: ($l == $curr-line-key);
+  $same-font-key: ($f == $curr-f-key);
+
+  $prev-size-key: $curr-size-key;
+  $prev-line-key: $curr-line-key;
+  $prev-font-key: $curr-f-key;
+
+  $curr-size-key: $s !global;
+  $curr-line-key: $l !global;
+  $curr-f-key: $f !global;
+
+  $size: size($s);
+  $line: line($l);
+
+  $font: if($f, font($f), null);
+  $font-family: if($font, map-get($font, 'font-family'), null);
+  $size-adjust: if($font, map-get($font, 'size-adjust') or 1, 1);
+
+  font-family: $font-family;
+  line-height: $line * medium-var('line-height') / $size-adjust;
+
+  // if in a stack
+  @if $curr-stack-sel {
+    font-size: unit-assert($size, em) * $size-adjust;
+    @at-root #{insert-parents('','>')} {
+      margin-top: typo-margin-em(0);
+      margin-bottom: typo-margin-em(0);
+      @include adjacent-to('*') { margin-top: typo-margin-em(); }
+      @include adjacent-to(p h1 h2 h3 h4 h5 h6 ul ol dl) { margin-top: typo-margin-ex(); }
+      @content;
+    }
+  }
+
+  // if not in a stack
+  @else {
+    font-size: unit-assert($size, rem) * $size-adjust;
+    @at-root #{insert-parents(base-class('stack'))} {
+      font-size: unit-assert($size, em) * $size-adjust;
+    }
+    @at-root #{insert-parents(base-class('stack'), '>')} {
+      margin-top: typo-margin-em(0);
+      margin-bottom: typo-margin-em(0);
+    }
+    $mults: medium-var('mults-y') or medium-var('mults');
+    @each $m, $mult in map-merge((base: 1), $mults) {
+      $stack-sel: '.stack#{multify($m)}';
+      @at-root #{insert-parents($stack-sel,'>')} {
+        @at-root #{insert-parents(p h1 h2 h3 h4 h5 h6 ul ol dl, '+')} {
+          margin-top: typo-margin-ex(if($m=='base',1,$m));
+        }
+        @at-root #{insert-parents('*', '+')} {
+          margin-top: typo-margin-em(if($m=='base',1,$m));
+        }
+        @content;
+      }
+    }
+  }
+
+  $curr-size-key: $prev-size-key !global;
+  $curr-line-key: $prev-line-key !global;
+  $curr-f-key: $prev-font-key !global;
+}

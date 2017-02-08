@@ -1,0 +1,17 @@
+@mixin outer-setup($t:0, $r:0, $b:0, $l:0) {
+
+  // ! this seems to cause problems
+  #{base-class('outer')} { overflow-x: hidden; overflow-y: visible; }
+
+  @include media-for('outer') {
+
+    .outer, .outer--right { padding-right: add-calc(medium-var('outer-right'), $r); }
+    .outer, .outer--left { padding-left: add-calc(medium-var('outer-left'), $l); }
+  }
+
+  @include media-for('outer-y') {
+
+    .outer-y, .outer--top { padding-top: add-calc(medium-var('outer-top'), $t); }
+    .outer-y, .outer--bottom { padding-bottom: add-calc(medium-var('outer-bottom'), $b); }
+  }
+}

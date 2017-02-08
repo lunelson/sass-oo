@@ -1,0 +1,74 @@
+/*
+  // SALIENT INFORMATION IS ONLY LINE AND FONT.
+  @include typo($line, $font) // specific line and font
+  @include typo(null, $font) // default line, specific font
+  @include typo($line, null) or typo($line) // specific line, default font
+  @include typo(null, null) or typo() // default line and font
+  @include typo(auto-line($size))
+
+  // AUTO LINE CALC
+  .foo { font-size: size(lg); @include typo(line(size, lg)); }
+  .foo {
+    $line: auto-line(lg);
+    font-size: size(lg);
+    line-height: $line;
+    @include typo((line: $line));
+  }
+  .foo { font-size: size(lg); @include typo(autoline(lg)); }
+
+  // default is ex-trimmed() margin-top. Pass a list of exceptions?
+  .stack p {
+    @include typo((line: 1.1, excl: div pre ))
+    // excl: [.m-block], trim: [ex]|mx|em
+    // -> .m-stack *:not(.m-block):not(div):not(pre) + p {}
+  }
+ */
+/*
+  $default-medium
+
+    font-size
+    font-size-mult
+
+    line-height
+    line-height-mult
+
+    inner-x
+    inner-x-mult
+
+    inner-y
+    inner-y-mult
+
+    outer-top
+    outer-right
+    outer-bottom
+    outer-left
+    text-width
+    text-columns
+    grid-columns
+    breakpoint
+
+    $curr-inner-y-mult
+    $curr-inner-x-mult
+    $curr-f-size-mult
+    $curr-line-mult
+ */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold; }
+  .m-stack > h1, .m-stack > h2, .m-stack > h3, .m-stack > h4, .m-stack > h5, .m-stack > h6, [class^="m-stack--"] > h1, [class^="m-stack--"] > h2, [class^="m-stack--"] > h3, [class^="m-stack--"] > h4, [class^="m-stack--"] > h5, [class^="m-stack--"] > h6, [class*=" m-stack--"] > h1, [class*=" m-stack--"] > h2, [class*=" m-stack--"] > h3, [class*=" m-stack--"] > h4, [class*=" m-stack--"] > h5, [class*=" m-stack--"] > h6 {
+    margin-top: trim-to-em(0, 1);
+    margin-bottom: trim-to-em(0, 1); }
+  .m-stack > *:not(.m-block) + h1, .m-stack > *:not(.m-block) + h2, .m-stack > *:not(.m-block) + h3, .m-stack > *:not(.m-block) + h4, .m-stack > *:not(.m-block) + h5, .m-stack > *:not(.m-block) + h6 {
+    margin-top: trim-to-em(1, 1, "em"); }
+
+.m-stack > h3 + h2 {
+  margin-top: trim-to-em(2); }
+
+.m-stack > p, .m-stack > ul, .m-stack > ol, .m-stack > dl, [class^="m-stack--"] > p, [class^="m-stack--"] > ul, [class^="m-stack--"] > ol, [class^="m-stack--"] > dl, [class*=" m-stack--"] > p, [class*=" m-stack--"] > ul, [class*=" m-stack--"] > ol, [class*=" m-stack--"] > dl {
+  margin-top: trim-to-em(0, 1);
+  margin-bottom: trim-to-em(0, 1); }
+
+.m-stack > *:not(div):not(pre):not(.m-block) + p, .m-stack > *:not(div):not(pre):not(.m-block) + ul, .m-stack > *:not(div):not(pre):not(.m-block) + ol, .m-stack > *:not(div):not(pre):not(.m-block) + dl {
+  margin-top: trim-to-em(1, 1, "ex"); }
+
+.m-stack > h5 + p, .m-stack > h5 + ul, .m-stack > h5 + ol, .m-stack > h5 + dl {
+  margin-top: trim-to-em(); }

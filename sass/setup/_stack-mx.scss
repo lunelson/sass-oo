@@ -1,0 +1,28 @@
+//
+// stack
+// --------------------------------------------------------------------------
+
+
+  // mult, line, font
+  @mixin stack($mult: $curr-inner-y, $line: $curr-line, $font: $curr-f) {
+
+    $prev-inner-y: $curr-inner-y;
+    $prev-line: $curr-line;
+    $prev-font: $curr-f;
+
+    $curr-inner-y: $mult !global;
+    $curr-line: $line !global;
+    $curr-f: $font !global;
+    $curr-stack: & !global;
+
+    padding-top: 0.1px; // prevent margin collapse
+    padding-bottom: 0.1px; // ^
+    & > * + * { margin-top: inner-y($mult); }
+
+    @content;
+
+    $curr-inner-y: $prev-inner-y !global;
+    $curr-line: $prev-line !global;
+    $curr-f: $prev-font !global;
+    $curr-stack: null !global;
+  }

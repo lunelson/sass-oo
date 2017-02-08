@@ -1,0 +1,8 @@
+@import '../../index';
+@include setup-m();
+
+.test {
+  out: inspect(inner-x());
+  out: inspect(inner-x(null));
+  out: if(0, truthy, falsey);
+}

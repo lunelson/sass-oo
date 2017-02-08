@@ -1,0 +1,19 @@
+@import "../node_modules/sass-m/index";
+@import "../node_modules/sass-u/index";
+@import '../sass/setup/grid/all';
+@import '../sass/setup/util';
+
+@include m-setup();
+@include grid-setup();
+
+.test {
+  false: inner-x(false);
+  null: inner-x(null);
+  null: inner-x(1);
+  null: inner-x(0);
+  null: inner-x(0) > 0™;
+}
+
+/*
+ #{map-stringify($base)}
+ */
